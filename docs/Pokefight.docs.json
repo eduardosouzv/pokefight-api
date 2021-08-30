@@ -1,0 +1,228 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Pokefight API",
+    "contact": {}
+  },
+  "host": "localhost:3333",
+  "basePath": "/",
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/pokemon/create": {
+      "post": {
+        "tags": ["Battle"],
+        "summary": "Create battle between two pokemons.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Battle"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Battle fighters, use the names of pokemons.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Battle"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "title": "Created",
+            "description": "This always returns 'Battle Created', because it processes battles in the background. If an error occurs, it will appear on the BullBoard.",
+            "schema": {
+              "$ref": "#/definitions/BattleCreated"
+            }
+          }
+        }
+      }
+    },
+    "/pokemon/show/{battleId}": {
+      "get": {
+        "tags": ["Battle"],
+        "summary": "Find one battle by id.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "battleId",
+            "description": "ID of battle to return.",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "title": "Batlle info",
+            "description": "This returns battleId, winner and involved pokemons information.",
+            "schema": {
+              "$ref": "#/definitions/BattleById"
+            }
+          },
+          "404": {
+            "title": "Not found",
+            "description": "Returns battle not found when id doesn't exists.",
+            "schema": {
+              "type": "object",
+              "example": {
+                "message": "Battle id {battleId} not found."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pokemon/index": {
+      "get": {
+        "tags": ["Battle"],
+        "summary": "Index all battles.",
+        "responses": {
+          "200": {
+            "title": "Batlle info",
+            "description": "This returns battleId, winner and involved pokemons information.",
+            "schema": {
+              "type": "array",
+              "example": [
+                {
+                  "id": 1,
+                  "defiant_name": "krabby",
+                  "opponent_name": "metang",
+                  "winner": "metang"
+                },
+                {
+                  "id": 2,
+                  "defiant_name": "pikachu",
+                  "opponent_name": "abra",
+                  "winner": "abra"
+                },
+                {
+                  "id": 3,
+                  "defiant_name": "ivysaur",
+                  "opponent_name": "bulbasaur",
+                  "winner": "bulbasaur"
+                },
+                {
+                  "id": 4,
+                  "defiant_name": "altaria",
+                  "opponent_name": "anorith",
+                  "winner": "anorith"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Battle": {
+      "type": "object",
+      "properties": {
+        "defiant": {
+          "type": "string",
+          "example": "pikachu"
+        },
+        "opponent": {
+          "type": "string",
+          "example": "abra"
+        }
+      },
+      "required": ["defiant", "opponent"]
+    },
+    "BattleCreated": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Battle created."
+        }
+      }
+    },
+    "BattleById": {
+      "type": "object",
+      "properties": {
+        "battle_id": {
+          "type": "string",
+          "example": "1"
+        },
+        "winner": {
+          "type": "string",
+          "example": "abra"
+        },
+        "defiant_info": {
+          "type": "object",
+          "example": {
+            "name": "abra",
+            "abilities": [
+              {
+                "ability": {
+                  "name": "static",
+                  "url": "https://pokeapi.co/api/v2/ability/9/"
+                },
+                "is_hidden": false,
+                "slot": 1
+              },
+              {
+                "ability": {
+                  "name": "lightning-rod",
+                  "url": "https://pokeapi.co/api/v2/ability/31/"
+                },
+                "is_hidden": true,
+                "slot": 3
+              }
+            ],
+            "types": [
+              {
+                "slot": 1,
+                "type": {
+                  "name": "electric",
+                  "url": "https://pokeapi.co/api/v2/type/13/"
+                }
+              }
+            ]
+          }
+        },
+        "opponent_info": {
+          "type": "object",
+          "example": {
+            "name": "pikachu",
+            "abilities": [
+              {
+                "ability": {
+                  "name": "static",
+                  "url": "https://pokeapi.co/api/v2/ability/9/"
+                },
+                "is_hidden": false,
+                "slot": 1
+              },
+              {
+                "ability": {
+                  "name": "lightning-rod",
+                  "url": "https://pokeapi.co/api/v2/ability/31/"
+                },
+                "is_hidden": true,
+                "slot": 3
+              }
+            ],
+            "types": [
+              {
+                "slot": 1,
+                "type": {
+                  "name": "electric",
+                  "url": "https://pokeapi.co/api/v2/type/13/"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

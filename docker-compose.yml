@@ -1,6 +1,14 @@
 version: '3.1'
 
 services:
+  docs:
+    image: swaggerapi/swagger-ui
+    ports:
+      - '7777:8080'
+    environment:
+      - 'SWAGGER_JSON=/docs/Pokefight.docs.json'
+    volumes:
+      - './docs:/docs'
   db:
     image: postgres
     ports:
@@ -31,4 +39,4 @@ services:
       - 'DB_PASSWORD=root'
       - 'REDIS_HOST=redis'
       - 'REDIS_PORT=6379'
-      - 'WEBHOOK_LINK="https://webhook.site/my-link"'
+      - 'WEBHOOK_LINK=https://webhook.site/my-link'
