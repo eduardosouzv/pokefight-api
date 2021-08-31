@@ -1,46 +1,42 @@
-const Queue = require('../lib/Queue');
-
-const Battle = require('../models/Battle');
-
-const getPokemonsInformations = require('../tools/getPokemonsInformations');
+const PokeApiService = require('../services/PokeApiService');
 
 module.exports = {
   async create(req, res) {
     const { defiant, opponent } = req.body;
 
-    if (!defiant || !opponent) return res.status(400).json({ message: 'Missing pokemon names.' });
+    const { id, defiant_name, opponent_name } = await new PokeApiService().createBattle({
+      defiant_name: defiant,
+      opponent_name: opponent,
+    });
 
-    await Queue.add('BattleCreation', { defiant, opponent });
-
-    res.status(201).json({ message: 'Battle created.' });
+    res.status(201).json({
+      battle_id: id,
+      defiant_name,
+      opponent_name,
+    });
   },
 
   async show(req, res) {
     const { id } = req.params;
 
-    if (isNaN(id)) return res.status(400).json({ message: 'Wrong param format.' });
+    const foundBattle = await new PokeApiService().findOneBattle(id);
 
-    const pokemonBattleFound = await Battle.findByPk(id);
-
-    if (!pokemonBattleFound) {
-      return res.status(404).json({ message: `Battle id ${id} not found.` });
+    if (!foundBattle) {
+      return res.status(400).json({
+        message: `Battle id ${id} not found.`,
+      });
     }
 
-    const { defiant_name, opponent_name, winner } = pokemonBattleFound;
-
-    const [defiant_info, opponent_info] = await getPokemonsInformations([defiant_name, opponent_name]);
-
-    res.json({
-      battle_id: id,
-      winner,
-      defiant_info,
-      opponent_info,
-    });
+    res.json(foundBattle);
   },
 
   async index(req, res) {
-    const allBattles = await Battle.findAll();
+    const allBattles = await new PokeApiService().findAll();
 
-    res.json(allBattles || []);
+    if (!allBattles.length) {
+      return res.status(204).json();
+    }
+
+    res.json(allBattles);
   },
 };

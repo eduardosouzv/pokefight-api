@@ -7,6 +7,7 @@ class Battle extends Model {
         defiant_name: DataTypes.STRING,
         opponent_name: DataTypes.STRING,
         winner: DataTypes.STRING,
+        status: DataTypes.ENUM(['PENDING', 'FINISHED', 'ERROR']),
       },
       { sequelize }
     );
