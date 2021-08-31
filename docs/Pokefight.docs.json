@@ -37,7 +37,7 @@
         "responses": {
           "201": {
             "title": "Created",
-            "description": "This always returns 'Battle Created', because it processes battles in the background. If an error occurs, it will appear on the BullBoard.",
+            "description": "This always returns fighters names, because it processes battles in the background. If an error occurs, it will appear on the BullBoard and will be sent to the webhook.",
             "schema": {
               "$ref": "#/definitions/BattleCreated"
             }
@@ -94,25 +94,29 @@
                   "id": 1,
                   "defiant_name": "krabby",
                   "opponent_name": "metang",
-                  "winner": "metang"
+                  "winner": "metang",
+                  "status": "FINISHED"
                 },
                 {
                   "id": 2,
                   "defiant_name": "pikachu",
                   "opponent_name": "abra",
-                  "winner": "abra"
+                  "winner": "abra",
+                  "status": "FINISHED"
                 },
                 {
                   "id": 3,
                   "defiant_name": "ivysaur",
                   "opponent_name": "bulbasaur",
-                  "winner": "bulbasaur"
+                  "winner": "bulbasaur",
+                  "status": "FINISHED"
                 },
                 {
                   "id": 4,
                   "defiant_name": "altaria",
                   "opponent_name": "anorith",
-                  "winner": "anorith"
+                  "winner": "anorith",
+                  "status": "FINISHED"
                 }
               ]
             }
@@ -139,9 +143,17 @@
     "BattleCreated": {
       "type": "object",
       "properties": {
-        "message": {
+        "battle_id": {
+          "type": "number",
+          "example": 1
+        },
+        "defiant_name": {
           "type": "string",
-          "example": "Battle created."
+          "example": "pikachu"
+        },
+        "opponent_name": {
+          "type": "string",
+          "example": "natu"
         }
       }
     },
