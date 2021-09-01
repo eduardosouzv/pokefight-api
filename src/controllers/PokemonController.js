@@ -5,8 +5,8 @@ module.exports = {
     const { defiant, opponent } = req.body;
 
     const { id, defiant_name, opponent_name, status } = await new PokeApiService().createBattle({
-      defiant_name: defiant,
-      opponent_name: opponent,
+      defiant_name: defiant.toLowerCase(),
+      opponent_name: opponent.toLowerCase(),
     });
 
     res.status(201).json({
