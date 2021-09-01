@@ -4,7 +4,7 @@ module.exports = {
   async create(req, res) {
     const { defiant, opponent } = req.body;
 
-    const { id, defiant_name, opponent_name } = await new PokeApiService().createBattle({
+    const { id, defiant_name, opponent_name, status } = await new PokeApiService().createBattle({
       defiant_name: defiant,
       opponent_name: opponent,
     });
@@ -13,6 +13,7 @@ module.exports = {
       battle_id: id,
       defiant_name,
       opponent_name,
+      status,
     });
   },
 
@@ -22,7 +23,7 @@ module.exports = {
     const foundBattle = await new PokeApiService().findOneBattle(id);
 
     if (!foundBattle) {
-      return res.status(400).json({
+      return res.status(404).json({
         message: `Battle id ${id} not found.`,
       });
     }
@@ -34,7 +35,7 @@ module.exports = {
     const allBattles = await new PokeApiService().findAll();
 
     if (!allBattles.length) {
-      return res.status(204).json();
+      return res.status(200).json([]);
     }
 
     res.json(allBattles);
