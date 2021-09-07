@@ -9,5 +9,6 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.removeColumn('battles', 'status');
+    await queryInterface.dropAllEnums();
   },
 };
