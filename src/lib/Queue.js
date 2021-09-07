@@ -15,7 +15,7 @@ const queues = Object.values(jobs).map(job => ({
 module.exports = {
   queues,
   add(name, data) {
-    const [queue] = queues.filter(queue => queue.name === name);
+    const queue = queues.find(queue => queue.name === name);
 
     return queue.bull.add(data);
   },
@@ -28,5 +28,14 @@ module.exports = {
         console.log('Job failed: ', job.queue.name);
       });
     });
+  },
+
+  async close() {
+    return Promise.all(
+      queues.map(async queue => {
+        await queue.bull.whenCurrentJobsFinished();
+        return queue.bull.close();
+      })
+    );
   },
 };
