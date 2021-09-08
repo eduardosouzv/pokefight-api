@@ -1,9 +1,3 @@
-const request = require('supertest');
-
-const Battle = require('../../src/models/Battle');
-
-const app = require('../../src/app');
-
 jest.mock('../../src/lib/Queue', () => {
   return {
     add: jest.fn().mockResolvedValue(),
@@ -11,20 +5,31 @@ jest.mock('../../src/lib/Queue', () => {
   };
 });
 
-describe('Battle Creation', () => {
-  beforeEach(async () => {
-    await Battle.destroy({ truncate: true, force: true, restartIdentity: true });
-  });
+const request = require('supertest');
 
+const app = require('../../src/app');
+const Queue = require('../../src/lib/Queue');
+
+describe('Battle Creation', () => {
   it('should create a battle with status PENDING', async () => {
     const response = await request(app).post('/pokemon/create').send({
       defiant: 'pikachu',
       opponent: 'abra',
     });
 
+    expect(Queue.add).toBeCalledTimes(1);
+    expect(Queue.add).toBeCalledWith('BattleCreation', {
+      createdBattle: expect.objectContaining({
+        id: expect.any(Number),
+        defiant_name: 'pikachu',
+        opponent_name: 'abra',
+        status: 'PENDING',
+        winner: null,
+      }),
+    });
     expect(response.status).toBe(201);
     expect(response.body).toEqual({
-      battle_id: 1,
+      battle_id: expect.any(Number),
       defiant_name: 'pikachu',
       opponent_name: 'abra',
       status: 'PENDING',
