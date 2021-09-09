@@ -38,4 +38,24 @@ module.exports = {
       })
     );
   },
+
+  waitCompletion(name) {
+    const queue = queues.find(queue => queue.name === name);
+
+    return new Promise(async resolve => {
+      let count = 0;
+
+      do {
+        const [active, pendingAndDelayed] = await Promise.all([queue.bull.getActiveCount(), queue.bull.count()]);
+
+        count = active + pendingAndDelayed;
+
+        if (count === 0) {
+          return resolve();
+        }
+
+        await new Promise(r => setTimeout(r, 100));
+      } while (count > 0);
+    });
+  },
 };
