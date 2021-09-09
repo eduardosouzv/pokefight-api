@@ -4,11 +4,16 @@ const WebhookService = require('../services/WebhookService');
 module.exports = {
   key: 'BattleCreation',
   async handle({ data }) {
-    const webhookService = new WebhookService();
-    const pokeApiService = new PokeApiService();
+    try {
+      const webhookService = new WebhookService();
+      const pokeApiService = new PokeApiService();
 
-    const resolvedBattle = await pokeApiService.resolveBattle(data.createdBattle);
+      const resolvedBattle = await pokeApiService.resolveBattle(data.createdBattle);
 
-    await webhookService.sendBattleToWebhook(resolvedBattle);
+      await webhookService.sendBattleToWebhook(resolvedBattle);
+    } catch (error) {
+      await new PokeApiService().updateBattleIfOccurrateAnError(data.createdBattle.id);
+      await new WebhookService().sendErrorMessage(data.createdBattle.id);
+    }
   },
 };

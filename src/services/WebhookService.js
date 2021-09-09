@@ -1,7 +1,4 @@
-const PokeApiClient = require('../clients/PokeApiClient');
 const WebhookClient = require('../clients/WebhookClient');
-
-const Battle = require('../models/Battle');
 
 class WebhookService {
   async sendBattleToWebhook(battle) {
@@ -10,10 +7,10 @@ class WebhookService {
     await webhookClient.send(battle);
   }
 
-  async sendErrorMessage() {
+  async sendErrorMessage(battleId) {
     const webhookClient = new WebhookClient();
 
-    await webhookClient.send({ message: 'an error occurred in the battle' });
+    await webhookClient.send({ battleId, message: 'an error occurred in the battle' });
   }
 }
 
