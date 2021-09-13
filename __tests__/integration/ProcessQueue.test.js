@@ -34,7 +34,7 @@ describe('Queue', () => {
 
     await Queue.add('BattleCreation', {
       createdBattle: {
-        id: 1,
+        id: 3,
         defiant_name: 'pikachu',
         opponent_name: 'abra',
         status: 'PENDING',
@@ -47,7 +47,7 @@ describe('Queue', () => {
     expect(spy).toBeCalled();
     expect(spy).toBeCalledWith(expect.any(String), {
       defiant_info: { abilities: [], name: 'pikachu', types: [] },
-      id: 1,
+      id: 3,
       opponent_info: { abilities: [], name: 'abra', types: [] },
       winner: expect.stringMatching(/^pikachu|abra/g),
     });
