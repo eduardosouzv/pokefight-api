@@ -13,7 +13,6 @@ describe('Find all battles', () => {
 
     expect(response.status).toBe(200);
 
-    console.log(response.body);
     expect(response.body).toEqual(
       expect.arrayContaining([
         {
