@@ -8,7 +8,7 @@
     "dev:server": "npx sequelize db:migrate && nodemon src/server.js",
     "dev:queue": "nodemon src/queue.js",
     "pretest": "NODE_ENV=test sequelize db:migrate && sequelize db:seed:all",
-    "test": "NODE_ENV=test jest --detectOpenHandles --collectCoverage",
+    "test": "NODE_ENV=test jest --detectOpenHandles --collectCoverage --silent",
     "posttest": "NODE_ENV=test sequelize db:migrate:undo:all"
   },
   "dependencies": {
