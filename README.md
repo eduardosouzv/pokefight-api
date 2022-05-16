@@ -1,10 +1,9 @@
-# Pokefight API
+<p align="center">
+  <img src="./src/assets/pokefight-api-md.png" />
+</p>
 
-A pokemon battle generator API with NodeJS
+<p align="center">Create many battles between pokemons and get them in webhook after be processed in our queue.</p>
 
-## Summary
-
-- [Summary](#summary)
 - [Setting up Webhook config](#setting-up-webhook-config)
 - [Running with docker-compose](#running-with-docker-compose)
 
