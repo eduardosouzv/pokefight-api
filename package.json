@@ -7,7 +7,7 @@
     "dev": "yarn dev:server & yarn dev:queue",
     "dev:server": "npx sequelize db:migrate && nodemon src/server.js",
     "dev:queue": "npx nodemon src/queue.js",
-    "pretest": "NODE_ENV=test sequelize db:migrate && sequelize db:seed:all",
+    "pretest": "NODE_ENV=test sequelize db:migrate && NODE_ENV=test sequelize db:seed:all",
     "test": "NODE_ENV=test jest --detectOpenHandles --collectCoverage --silent",
     "posttest": "NODE_ENV=test sequelize db:migrate:undo:all"
   },
@@ -29,5 +29,10 @@
     "prettier": "^2.3.2",
     "sequelize-cli": "^6.2.0",
     "supertest": "^6.1.6"
+  },
+  "jest": {
+    "globals": {
+      "CU": "aaaaa"
+    }
   }
 }
